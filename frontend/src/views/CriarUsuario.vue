@@ -7,7 +7,6 @@
       </div>
 
       <form @submit.prevent="criarUsuario" class="form">
-        <!-- Nome -->
         <div class="field">
           <label for="nome" class="field-label">
             Nome Completo *
@@ -24,7 +23,7 @@
           <span v-if="errors.nome" class="error-message">{{ errors.nome }}</span>
         </div>
 
-        <!-- Email -->
+      
         <div class="field">
           <label for="email" class="field-label">E-mail *</label>
           <input
@@ -39,7 +38,7 @@
           <span v-if="errors.email" class="error-message">{{ errors.email }}</span>
         </div>
 
-        <!-- Telefone -->
+    
         <div class="field">
           <label for="telefone" class="field-label">Telefone *</label>
           <input
@@ -164,10 +163,8 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { useUsuarioStore } from '../stores/usuario'
 
 const router = useRouter()
-const usuarioStore = useUsuarioStore()
 
 const isLoading = ref(false)
 const showSuccess = ref(false)
@@ -261,13 +258,6 @@ const criarUsuario = async () => {
   isLoading.value = true
 
   try {
-    await usuarioStore.criarUsuario({
-      nome: form.nome,
-      email: form.email,
-      telefone: form.telefone,
-      cpf: form.cpf.replace(/\D/g, ''),
-      senha: form.senha
-    })
 
     showSuccess.value = true
   } catch (error) {

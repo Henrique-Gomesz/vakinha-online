@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <!-- Hero Section -->
     <section class="hero">
       <div class="container">
         <div class="hero-content">
@@ -23,76 +22,6 @@
       </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features">
-      <div class="container">
-        <div class="features-header">
-          <h2 class="section-title">Como funciona</h2>
-          <p class="section-subtitle">Simples, rápido e seguro</p>
-        </div>
-
-        <div class="features-grid">
-          <!-- Feature 1 -->
-          <div class="feature-card">
-            <div class="feature-icon">
-              <span>👤</span>
-            </div>
-            <h3 class="feature-title">1. Cadastre-se</h3>
-            <p class="feature-description">
-              Crie sua conta gratuita em poucos minutos
-            </p>
-          </div>
-
-          <!-- Feature 2 -->
-          <div class="feature-card">
-            <div class="feature-icon">
-              <span>🎯</span>
-            </div>
-            <h3 class="feature-title">2. Crie sua Vakinha</h3>
-            <p class="feature-description">
-              Configure sua campanha com meta, descrição e imagens
-            </p>
-          </div>
-
-          <!-- Feature 3 -->
-          <div class="feature-card">
-            <div class="feature-icon">
-              <span>🚀</span>
-            </div>
-            <h3 class="feature-title">3. Compartilhe</h3>
-            <p class="feature-description">
-              Divulgue sua vakinha e receba contribuições
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats">
-      <div class="container">
-        <div class="stats-grid">
-          <div class="stat-item">
-            <div class="stat-number">1000+</div>
-            <div class="stat-label">Vakinhas criadas</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">R$ 500k</div>
-            <div class="stat-label">Arrecadado</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">5000+</div>
-            <div class="stat-label">Contribuidores</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">95%</div>
-            <div class="stat-label">Taxa de sucesso</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA Section -->
     <section class="cta">
       <div class="container">
         <div class="cta-content">
@@ -110,15 +39,12 @@
 </template>
 
 <script setup lang="ts">
-// Home page logic can be added here
+
 </script>
 
 <style scoped>
-.home {
-  padding: 3rem 0;
-}
 
-/* Hero Section */
+
 .hero {
   background: linear-gradient(to right, var(--primary-600), var(--primary-800));
   color: #ffffff;
@@ -173,7 +99,6 @@
   }
 }
 
-/* Features Section */
 .features {
   padding: 4rem 0;
 }
@@ -284,7 +209,6 @@
   font-size: 0.875rem;
 }
 
-/* CTA Section */
 .cta {
   padding: 4rem 0;
 }

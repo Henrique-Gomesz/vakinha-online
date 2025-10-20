@@ -137,11 +137,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useVakinhaStore } from '../stores/vakinha'
 
 const router = useRouter()
-const vakinhaStore = useVakinhaStore()
-
 const filtroCategoria = ref('todas')
 
 const categorias = [
@@ -156,13 +153,6 @@ const categorias = [
   { value: 'tecnologia', label: 'Tecnologia' },
   { value: 'outros', label: 'Outros' }
 ]
-
-const vakinhasFiltradas = computed(() => {
-  if (filtroCategoria.value === 'todas') {
-    return vakinhaStore.vakinhas
-  }
-  return vakinhaStore.vakinhas.filter((v: any) => v.categoria === filtroCategoria.value)
-})
 
 const getCategoriaLabel = (categoria: string) => {
   const cat = categorias.find(c => c.value === categoria)
@@ -213,7 +203,7 @@ const verDetalhes = (id: string) => {
 }
 
 onMounted(() => {
-  vakinhaStore.carregarVakinhas()
+  
 })
 </script>
 

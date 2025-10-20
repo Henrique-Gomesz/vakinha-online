@@ -1,18 +1,15 @@
 <template>
-  <div class="py-12">
-    <div class="container-form">
-      <div class="card">
-        <div class="text-center mb-6">
-          <h1 class="heading-lg">Criar Nova Vakinha</h1>
-          <p class="text-muted mt-2">Preencha os dados da sua campanha</p>
+  <div class="criar-vakinha">
+    <div class="container">
+      <div class="form-container">
+        <div class="header">
+          <h1>Criar Nova Vakinha</h1>
+          <p>Preencha os dados da sua campanha</p>
         </div>
 
-        <form @submit.prevent="criarVakinha" class="form-grid">
-          <!-- Título -->
-          <div>
-            <label for="titulo" class="form-label">
-              Título da Vakinha *
-            </label>
+        <form @submit.prevent="criarVakinha" class="vakinha-form">
+          <div class="form-group">
+            <label for="titulo">Título da Vakinha *</label>
             <input
               id="titulo"
               v-model="form.titulo"
@@ -20,42 +17,36 @@
               required
               maxlength="100"
               class="form-input"
-              :class="{ 'form-input-error': errors.titulo }"
+              :class="{ error: errors.titulo }"
               placeholder="Ex: Ajude o João a comprar uma cadeira de rodas"
             />
-            <div class="flex justify-between mt-1">
-              <span v-if="errors.titulo" class="text-error">{{ errors.titulo }}</span>
-              <span class="text-muted text-sm ml-auto">{{ form.titulo.length }}/100</span>
+            <div class="input-footer">
+              <span v-if="errors.titulo" class="error-text">{{ errors.titulo }}</span>
+              <span class="char-count">{{ form.titulo.length }}/100</span>
             </div>
           </div>
 
-          <!-- Descrição -->
-          <div>
-            <label for="descricao" class="form-label">
-              Descrição *
-            </label>
+          <div class="form-group">
+            <label for="descricao">Descrição *</label>
             <textarea
               id="descricao"
               v-model="form.descricao"
               required
               rows="6"
               maxlength="1000"
-              class="form-input form-textarea"
-              :class="{ 'form-input-error': errors.descricao }"
+              class="form-input"
+              :class="{ error: errors.descricao }"
               placeholder="Conte a história da sua vakinha. Explique o motivo, como o dinheiro será usado e por que as pessoas devem contribuir."
-            />
-            <div class="flex justify-between mt-1">
-              <span v-if="errors.descricao" class="text-error">{{ errors.descricao }}</span>
-              <span class="text-muted text-sm ml-auto">{{ form.descricao.length }}/1000</span>
+            ></textarea>
+            <div class="input-footer">
+              <span v-if="errors.descricao" class="error-text">{{ errors.descricao }}</span>
+              <span class="char-count">{{ form.descricao.length }}/1000</span>
             </div>
           </div>
 
-          <!-- Meta Financeira -->
-          <div class="grid-2">
-            <div>
-              <label for="metaFinanceira" class="form-label">
-                Meta Financeira (R$) *
-              </label>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="metaFinanceira">Meta Financeira (R$) *</label>
               <input
                 id="metaFinanceira"
                 v-model="form.metaFinanceira"
@@ -64,16 +55,14 @@
                 min="1"
                 step="0.01"
                 class="form-input"
-                :class="{ 'form-input-error': errors.metaFinanceira }"
+                :class="{ error: errors.metaFinanceira }"
                 placeholder="0,00"
               />
-              <span v-if="errors.metaFinanceira" class="text-error text-sm">{{ errors.metaFinanceira }}</span>
+              <span v-if="errors.metaFinanceira" class="error-text">{{ errors.metaFinanceira }}</span>
             </div>
 
-            <div>
-              <label for="dataLimite" class="form-label">
-                Data Limite
-              </label>
+            <div class="form-group">
+              <label for="dataLimite">Data Limite</label>
               <input
                 id="dataLimite"
                 v-model="form.dataLimite"
@@ -84,17 +73,14 @@
             </div>
           </div>
 
-          <!-- Categoria -->
-          <div>
-            <label for="categoria" class="form-label">
-              Categoria *
-            </label>
+          <div class="form-group">
+            <label for="categoria">Categoria *</label>
             <select
               id="categoria"
               v-model="form.categoria"
               required
               class="form-input"
-              :class="{ 'form-input-error': errors.categoria }"
+              :class="{ error: errors.categoria }"
             >
               <option value="">Selecione uma categoria</option>
               <option value="saude">Saúde</option>
@@ -107,113 +93,75 @@
               <option value="tecnologia">Tecnologia</option>
               <option value="outros">Outros</option>
             </select>
-            <span v-if="errors.categoria" class="text-error text-sm">{{ errors.categoria }}</span>
+            <span v-if="errors.categoria" class="error-text">{{ errors.categoria }}</span>
           </div>
 
-          <!-- Upload de Imagem -->
-          <div>
-            <label class="form-label">
-              Imagem da Vakinha
-            </label>
+          <div class="form-group">
+            <label>Imagem da Vakinha</label>
             <div class="upload-area">
-              <div class="space-y-1 text-center">
-                <svg
-                  class="upload-icon"
-                  stroke="currentColor"
-                  fill="none"
-                  viewBox="0 0 48 48"
-                >
-                  <path
-                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
+              <div class="upload-content">
+                <svg class="upload-icon" viewBox="0 0 48 48">
+                  <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <div class="flex text-sm text-muted">
-                  <label
-                    for="imagem"
-                    class="upload-label"
-                  >
+                <div class="upload-text">
+                  <label for="imagem" class="upload-label">
                     <span>Escolher arquivo</span>
-                    <input
-                      id="imagem"
-                      type="file"
-                      class="hidden"
-                      accept="image/*"
-                      @change="onImageChange"
-                    />
+                    <input id="imagem" type="file" class="hidden" accept="image/*" @change="onImageChange"/>
                   </label>
-                  <p class="pl-1">ou arraste e solte</p>
+                  <p>ou arraste e solte</p>
                 </div>
-                <p class="text-xs text-muted">PNG, JPG, GIF até 5MB</p>
+                <p class="upload-hint">PNG, JPG, GIF até 5MB</p>
               </div>
             </div>
             
-            <!-- Preview da imagem -->
-            <div v-if="imagePreview" class="mt-4">
-              <img :src="imagePreview" alt="Preview" class="image-preview" />
+            <div v-if="imagePreview" class="image-preview">
+              <img :src="imagePreview" alt="Preview"/>
             </div>
           </div>
 
-          <!-- Informações de Contato -->
           <div class="section-divider">
-            <h3 class="section-title">Informações de Contato</h3>
-            
-            <div class="grid-2">
-              <div>
-                <label for="nomeResponsavel" class="form-label">
-                  Nome do Responsável *
-                </label>
-                <input
-                  id="nomeResponsavel"
-                  v-model="form.nomeResponsavel"
-                  type="text"
-                  required
-                  class="form-input"
-                  :class="{ 'form-input-error': errors.nomeResponsavel }"
-                  placeholder="Seu nome"
-                />
-                <span v-if="errors.nomeResponsavel" class="text-error text-sm">{{ errors.nomeResponsavel }}</span>
-              </div>
+            <h3>Informações de Contato</h3>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nomeResponsavel">Nome do Responsável *</label>
+              <input
+                id="nomeResponsavel"
+                v-model="form.nomeResponsavel"
+                type="text"
+                required
+                class="form-input"
+                :class="{ error: errors.nomeResponsavel }"
+                placeholder="Seu nome"
+              />
+              <span v-if="errors.nomeResponsavel" class="error-text">{{ errors.nomeResponsavel }}</span>
+            </div>
 
-              <div>
-                <label for="emailContato" class="form-label">
-                  E-mail de Contato *
-                </label>
-                <input
-                  id="emailContato"
-                  v-model="form.emailContato"
-                  type="email"
-                  required
-                  class="form-input"
-                  :class="{ 'form-input-error': errors.emailContato }"
-                  placeholder="seu@email.com"
-                />
-                <span v-if="errors.emailContato" class="text-error text-sm">{{ errors.emailContato }}</span>
-              </div>
+            <div class="form-group">
+              <label for="emailContato">E-mail de Contato *</label>
+              <input
+                id="emailContato"
+                v-model="form.emailContato"
+                type="email"
+                required
+                class="form-input"
+                :class="{ error: errors.emailContato }"
+                placeholder="seu@email.com"
+              />
+              <span v-if="errors.emailContato" class="error-text">{{ errors.emailContato }}</span>
             </div>
           </div>
 
-          <!-- Botões -->
-          <div class="button-group">
-            <button
-              type="button"
-              @click="$router.go(-1)"
-              class="btn btn-secondary flex-1"
-            >
+          <div class="form-actions">
+            <button type="button" @click="$router.go(-1)" class="btn btn-secondary">
               Cancelar
             </button>
-            <button
-              type="submit"
-              :disabled="isLoading"
-              class="btn btn-primary flex-1"
-              :class="{ 'btn-loading': isLoading }"
-            >
-              <span v-if="isLoading" class="flex items-center justify-center">
-                <svg class="loading-spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            <button type="submit" :disabled="isLoading" class="btn btn-primary" :class="{ loading: isLoading }">
+              <span v-if="isLoading" class="loading-content">
+                <svg class="spinner" viewBox="0 0 24 24">
+                  <circle class="spinner-circle" cx="12" cy="12" r="10"/>
+                  <path class="spinner-path" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
                 </svg>
                 Criando...
               </span>
@@ -224,30 +172,21 @@
       </div>
     </div>
 
-    <!-- Success Modal -->
     <div v-if="showSuccess" class="modal-overlay">
       <div class="modal">
-        <div class="text-center">
+        <div class="modal-content">
           <div class="success-icon">
-            <svg class="h-6 w-6 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            <svg viewBox="0 0 24 24">
+              <path d="M5 13l4 4L19 7"/>
             </svg>
           </div>
-          <h3 class="modal-title">Vakinha criada com sucesso!</h3>
-          <p class="modal-text">
-            Sua vakinha foi criada e já está disponível para receber contribuições.
-          </p>
-          <div class="modal-buttons">
-            <button
-              @click="verVakinha"
-              class="btn btn-primary w-full"
-            >
+          <h3>Vakinha criada com sucesso!</h3>
+          <p>Sua vakinha foi criada e já está disponível para receber contribuições.</p>
+          <div class="modal-actions">
+            <button @click="verVakinha" class="btn btn-primary full-width">
               Ver minha vakinha
             </button>
-            <button
-              @click="criarNova"
-              class="btn btn-secondary w-full"
-            >
+            <button @click="criarNova" class="btn btn-secondary full-width">
               Criar outra vakinha
             </button>
           </div>
@@ -260,10 +199,8 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useVakinhaStore } from '../stores/vakinha'
 
 const router = useRouter()
-const vakinhaStore = useVakinhaStore()
 
 const isLoading = ref(false)
 const showSuccess = ref(false)
@@ -361,26 +298,6 @@ const criarVakinha = async () => {
 
   isLoading.value = true
 
-  try {
-    const resultado = await vakinhaStore.criarVakinha({
-      titulo: form.titulo,
-      descricao: form.descricao,
-      metaFinanceira: parseFloat(form.metaFinanceira),
-      dataLimite: form.dataLimite || null,
-      categoria: form.categoria,
-      imagem: form.imagem,
-      nomeResponsavel: form.nomeResponsavel,
-      emailContato: form.emailContato
-    })
-
-    vakinhaId.value = resultado.id
-    showSuccess.value = true
-  } catch (error) {
-    console.error('Erro ao criar vakinha:', error)
-    // Tratar erro
-  } finally {
-    isLoading.value = false
-  }
 }
 
 const verVakinha = () => {
@@ -402,3 +319,400 @@ const criarNova = () => {
   imagePreview.value = ''
 }
 </script>
+
+<style scoped>
+.criar-vakinha {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #99abf4 0%, #2954f0 100%);
+  padding: 2rem 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.form-container {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  padding: 3rem;
+  margin: 2rem 0;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  color: #718096;
+  font-size: 1.1rem;
+}
+
+.vakinha-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 1rem;
+}
+
+.form-input {
+  padding: 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #f8fafc;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-input.error {
+  border-color: #e53e3e;
+  background: #fed7d7;
+}
+
+.form-input::placeholder {
+  color: #a0aec0;
+}
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 150px;
+}
+
+.input-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.error-text {
+  color: #e53e3e;
+  font-weight: 500;
+}
+
+.char-count {
+  color: #718096;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.upload-area {
+  border: 2px dashed #cbd5e0;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  text-align: center;
+  background: #f8fafc;
+  transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+  border-color: #667eea;
+  background: #eef4ff;
+}
+
+.upload-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.upload-icon {
+  width: 48px;
+  height: 48px;
+  color: #a0aec0;
+  stroke: currentColor;
+  fill: none;
+}
+
+.upload-text {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #718096;
+}
+
+.upload-label {
+  color: #667eea;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.upload-label:hover {
+  color: #5a67d8;
+}
+
+.hidden {
+  display: none;
+}
+
+.upload-hint {
+  font-size: 0.875rem;
+  color: #a0aec0;
+  margin: 0;
+}
+
+.image-preview {
+  margin-top: 1rem;
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 300px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.section-divider {
+  border-top: 2px solid #e2e8f0;
+  padding-top: 2rem;
+  margin-top: 1rem;
+}
+
+.section-divider h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+}
+
+.form-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #1933c7 100%);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
+  background: #f7fafc;
+  color: #4a5568;
+  border: 2px solid #e2e8f0;
+}
+
+.btn-secondary:hover {
+  background: #edf2f7;
+  border-color: #cbd5e0;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn.loading {
+  opacity: 0.8;
+}
+
+.loading-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+.spinner-circle {
+  opacity: 0.25;
+  stroke: currentColor;
+  stroke-width: 4;
+  fill: none;
+}
+
+.spinner-path {
+  opacity: 0.75;
+  fill: currentColor;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal {
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+}
+
+.modal-content {
+  text-align: center;
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #48bb78, #38a169);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 2rem;
+}
+
+.success-icon svg {
+  width: 40px;
+  height: 40px;
+  color: white;
+  stroke: currentColor;
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.modal-content h3 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 1rem;
+}
+
+.modal-content p {
+  color: #718096;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .form-container {
+    padding: 2rem 1.5rem;
+    margin: 1rem 0;
+    border-radius: 16px;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .form-actions {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .upload-area {
+    padding: 2rem 1rem;
+  }
+
+  .modal {
+    padding: 2rem;
+    margin: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.5rem;
+  }
+
+  .form-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .header h1 {
+    font-size: 1.75rem;
+  }
+
+  .vakinha-form {
+    gap: 1.5rem;
+  }
+}
+</style>

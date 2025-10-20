@@ -1,8 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import CriarUsuario from '../views/CriarUsuario.vue'
+import CriarVakinha from '../views/CriarVakinha.vue'
+import ListarVakinhas from '../views/ListarVakinhas.vue'
+
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
@@ -12,17 +16,17 @@ const router = createRouter({
     {
       path: '/criar-usuario',
       name: 'criar-usuario',
-      component: () => import('../views/CriarUsuario.vue'),
+      component: CriarUsuario,
     },
     {
       path: '/criar-vakinha',
       name: 'criar-vakinha',
-      component: () => import('../views/CriarVakinha.vue'),
+      component: CriarVakinha,
     },
     {
       path: '/vakinhas',
       name: 'vakinhas',
-      component: () => import('../views/ListarVakinhas.vue'),
+      component: ListarVakinhas,
     },
   ],
 })
