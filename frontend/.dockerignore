@@ -1,0 +1,15 @@
+node_modules
+npm-debug.log*
+.npm
+.env.local
+.env.*.local
+dist
+coverage
+.nyc_output
+.cache
+.temp
+.rpt2_cache
+.vscode
+.idea
+*.log
+.DS_Store
