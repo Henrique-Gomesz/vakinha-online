@@ -1,3 +1,4 @@
+
 <template>
   <div class="criar-vakinha">
     <div class="container">
@@ -11,13 +12,11 @@
           <div class="form-group">
             <label for="titulo">Título da Vakinha *</label>
             <input
+              type="text"
               id="titulo"
               v-model="form.titulo"
-              type="text"
-              required
+              :class="['form-input', errors.titulo ? 'error' : '']"
               maxlength="100"
-              class="form-input"
-              :class="{ error: errors.titulo }"
               placeholder="Ex: Ajude o João a comprar uma cadeira de rodas"
             />
             <div class="input-footer">
@@ -31,11 +30,8 @@
             <textarea
               id="descricao"
               v-model="form.descricao"
-              required
-              rows="6"
+              :class="['form-input', errors.descricao ? 'error' : '']"
               maxlength="1000"
-              class="form-input"
-              :class="{ error: errors.descricao }"
               placeholder="Conte a história da sua vakinha. Explique o motivo, como o dinheiro será usado e por que as pessoas devem contribuir."
             ></textarea>
             <div class="input-footer">
@@ -48,15 +44,13 @@
             <div class="form-group">
               <label for="metaFinanceira">Meta Financeira (R$) *</label>
               <input
+                type="number"
                 id="metaFinanceira"
                 v-model="form.metaFinanceira"
-                type="number"
-                required
-                min="1"
+                :class="['form-input', errors.metaFinanceira ? 'error' : '']"
+                min="0"
                 step="0.01"
-                class="form-input"
-                :class="{ error: errors.metaFinanceira }"
-                placeholder="0,00"
+                placeholder="Ex: 5000.00"
               />
               <span v-if="errors.metaFinanceira" class="error-text">{{ errors.metaFinanceira }}</span>
             </div>
@@ -64,9 +58,9 @@
             <div class="form-group">
               <label for="dataLimite">Data Limite</label>
               <input
+                type="date"
                 id="dataLimite"
                 v-model="form.dataLimite"
-                type="date"
                 class="form-input"
                 :min="dataMinima"
               />
@@ -78,15 +72,13 @@
             <select
               id="categoria"
               v-model="form.categoria"
-              required
-              class="form-input"
-              :class="{ error: errors.categoria }"
+              :class="['form-input', errors.categoria ? 'error' : '']"
             >
               <option value="">Selecione uma categoria</option>
               <option value="saude">Saúde</option>
               <option value="educacao">Educação</option>
               <option value="emergencia">Emergência</option>
-              <option value="projetos">Projetos Pessoais</option>
+              <option value="projetos">Projetos</option>
               <option value="caridade">Caridade</option>
               <option value="animais">Animais</option>
               <option value="esportes">Esportes</option>
@@ -97,43 +89,51 @@
           </div>
 
           <div class="form-group">
-            <label>Imagem da Vakinha</label>
-            <div class="upload-area">
-              <div class="upload-content">
-                <svg class="upload-icon" viewBox="0 0 48 48">
-                  <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <label>Imagem da Campanha</label>
+            <div 
+              class="upload-area"
+              @dragover.prevent
+              @drop.prevent="onImageDrop"
+            >
+              <div v-if="!imagePreview" class="upload-content">
+                <svg class="upload-icon" viewBox="0 0 24 24">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
                 </svg>
                 <div class="upload-text">
-                  <label for="imagem" class="upload-label">
-                    <span>Escolher arquivo</span>
-                    <input id="imagem" type="file" class="hidden" accept="image/*" @change="onImageChange"/>
+                  <span>Arraste e solte uma imagem ou</span>
+                  <label class="upload-label">
+                    busque no seu computador
+                    <input
+                      type="file"
+                      class="hidden"
+                      accept="image/*"
+                      @change="onImageChange"
+                    >
                   </label>
-                  <p>ou arraste e solte</p>
                 </div>
-                <p class="upload-hint">PNG, JPG, GIF até 5MB</p>
+                <p class="upload-hint">PNG, JPG até 5MB</p>
               </div>
-            </div>
-            
-            <div v-if="imagePreview" class="image-preview">
-              <img :src="imagePreview" alt="Preview"/>
+              <div v-else class="image-preview">
+                <img :src="imagePreview" alt="Preview">
+              </div>
             </div>
           </div>
 
           <div class="section-divider">
-            <h3>Informações de Contato</h3>
+            <h3>Dados de Contato</h3>
           </div>
           
           <div class="form-row">
             <div class="form-group">
               <label for="nomeResponsavel">Nome do Responsável *</label>
               <input
+                type="text"
                 id="nomeResponsavel"
                 v-model="form.nomeResponsavel"
-                type="text"
-                required
-                class="form-input"
-                :class="{ error: errors.nomeResponsavel }"
-                placeholder="Seu nome"
+                :class="['form-input', errors.nomeResponsavel ? 'error' : '']"
+                placeholder="Seu nome completo"
               />
               <span v-if="errors.nomeResponsavel" class="error-text">{{ errors.nomeResponsavel }}</span>
             </div>
@@ -141,31 +141,37 @@
             <div class="form-group">
               <label for="emailContato">E-mail de Contato *</label>
               <input
+                type="email"
                 id="emailContato"
                 v-model="form.emailContato"
-                type="email"
-                required
-                class="form-input"
-                :class="{ error: errors.emailContato }"
-                placeholder="seu@email.com"
+                :class="['form-input', errors.emailContato ? 'error' : '']"
+                placeholder="Ex: joao@email.com"
               />
               <span v-if="errors.emailContato" class="error-text">{{ errors.emailContato }}</span>
             </div>
           </div>
 
           <div class="form-actions">
-            <button type="button" @click="$router.go(-1)" class="btn btn-secondary">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="$router.push('/vakinhas')"
+            >
               Cancelar
             </button>
-            <button type="submit" :disabled="isLoading" class="btn btn-primary" :class="{ loading: isLoading }">
-              <span v-if="isLoading" class="loading-content">
-                <svg class="spinner" viewBox="0 0 24 24">
-                  <circle class="spinner-circle" cx="12" cy="12" r="10"/>
-                  <path class="spinner-path" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              :disabled="isLoading"
+            >
+              <span v-if="!isLoading">Criar Vakinha</span>
+              <div v-else class="loading-content">
+                <svg class="spinner" viewBox="0 0 50 50">
+                  <circle class="spinner-circle" cx="25" cy="25" r="20"></circle>
+                  <circle class="spinner-path" cx="25" cy="25" r="20"></circle>
                 </svg>
-                Criando...
-              </span>
-              <span v-else>Criar Vakinha</span>
+                <span>Criando...</span>
+              </div>
             </button>
           </div>
         </form>
@@ -177,17 +183,17 @@
         <div class="modal-content">
           <div class="success-icon">
             <svg viewBox="0 0 24 24">
-              <path d="M5 13l4 4L19 7"/>
+              <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
           </div>
           <h3>Vakinha criada com sucesso!</h3>
           <p>Sua vakinha foi criada e já está disponível para receber contribuições.</p>
           <div class="modal-actions">
-            <button @click="verVakinha" class="btn btn-primary full-width">
-              Ver minha vakinha
+            <button class="btn btn-primary full-width" @click="verVakinha">
+              Ver minha Vakinha
             </button>
-            <button @click="criarNova" class="btn btn-secondary full-width">
-              Criar outra vakinha
+            <button class="btn btn-secondary full-width" @click="criarNova">
+              Criar outra Vakinha
             </button>
           </div>
         </div>
@@ -196,7 +202,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -213,7 +219,7 @@ const form = reactive({
   metaFinanceira: '',
   dataLimite: '',
   categoria: '',
-  imagem: null as File | null,
+  imagem: null,
   nomeResponsavel: '',
   emailContato: ''
 })
@@ -233,8 +239,8 @@ const dataMinima = computed(() => {
   return hoje.toISOString().split('T')[0]
 })
 
-const onImageChange = (event: Event) => {
-  const target = event.target as HTMLInputElement
+const onImageChange = (event) => {
+  const target = event.target
   const file = target.files?.[0]
   
   if (file) {
@@ -243,7 +249,19 @@ const onImageChange = (event: Event) => {
     // Criar preview
     const reader = new FileReader()
     reader.onload = (e) => {
-      imagePreview.value = e.target?.result as string
+      imagePreview.value = e.target?.result
+    }
+    reader.readAsDataURL(file)
+  }
+}
+
+const onImageDrop = (event) => {
+  const file = event.dataTransfer.files[0]
+  if (file && file.type.startsWith('image/')) {
+    form.imagem = file
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      imagePreview.value = e.target?.result
     }
     reader.readAsDataURL(file)
   }
@@ -251,7 +269,7 @@ const onImageChange = (event: Event) => {
 
 const validarFormulario = () => {
   // Resetar erros
-  Object.keys(errors).forEach(key => errors[key as keyof typeof errors] = '')
+  Object.keys(errors).forEach(key => errors[key] = '')
 
   let isValid = true
 
@@ -298,6 +316,16 @@ const criarVakinha = async () => {
 
   isLoading.value = true
 
+  try {
+    // Aqui você implementará a lógica de envio para o backend
+    await new Promise(resolve => setTimeout(resolve, 1500)) // Simulação
+    vakinhaId.value = 'abc123' // ID retornado pelo backend
+    showSuccess.value = true
+  } catch (error) {
+    console.error('Erro ao criar vakinha:', error)
+  } finally {
+    isLoading.value = false
+  }
 }
 
 const verVakinha = () => {
