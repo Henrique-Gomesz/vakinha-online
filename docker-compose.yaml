@@ -1,6 +1,42 @@
 version: '3.8'
 
 services:
+  # MongoDB
+  mongodb:
+    image: mongo:7.0
+    container_name: vakinha-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    environment:
+      - MONGO_INITDB_DATABASE=vakinha-online
+    restart: unless-stopped
+    networks:
+      - vakinha-network
+
+  # Backend Express
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: vakinha-backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongodb:27017/vakinha-online
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+    networks:
+      - vakinha-network
+
   # Frontend Vue.js
   frontend:
     build:
@@ -14,6 +50,19 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
+      - VITE_API_URL=http://localhost:3000/api
+    depends_on:
+      - backend
     restart: unless-stopped
     stdin_open: true
     tty: true
+    networks:
+      - vakinha-network
+
+networks:
+  vakinha-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  mongodb_config:

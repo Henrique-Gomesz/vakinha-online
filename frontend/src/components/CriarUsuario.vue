@@ -163,6 +163,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import usuarioService from '../services/usuarioService'
 
 const router = useRouter()
 
@@ -258,10 +259,28 @@ const criarUsuario = async () => {
   isLoading.value = true
 
   try {
+    // Remover a formatação do CPF e telefone antes de enviar
+    const cpfLimpo = form.cpf.replace(/\D/g, '')
+    const telefoneLimpo = form.telefone.replace(/\D/g, '')
+
+    await usuarioService.create({
+      nome: form.nome,
+      email: form.email,
+      telefone: telefoneLimpo,
+      cpf: cpfLimpo,
+      senha: form.senha
+    })
 
     showSuccess.value = true
-  } catch (error) {
+  } catch (error: any) {
     console.error('Erro ao criar usuário:', error)
+    
+    // Exibir mensagem de erro específica
+    if (error.response?.data?.message) {
+      alert(error.response.data.message)
+    } else {
+      alert('Erro ao criar usuário. Tente novamente.')
+    }
   } finally {
     isLoading.value = false
   }

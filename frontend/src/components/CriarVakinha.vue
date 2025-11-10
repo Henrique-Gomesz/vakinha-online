@@ -205,6 +205,7 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import vakinhaService from '../services/vakinhaService'
 
 const router = useRouter()
 
@@ -317,12 +318,23 @@ const criarVakinha = async () => {
   isLoading.value = true
 
   try {
-    // Aqui você implementará a lógica de envio para o backend
-    await new Promise(resolve => setTimeout(resolve, 1500)) // Simulação
-    vakinhaId.value = 'abc123' // ID retornado pelo backend
+    const vakinhaData = {
+      titulo: form.titulo,
+      descricao: form.descricao,
+      metaFinanceira: parseFloat(form.metaFinanceira),
+      dataLimite: form.dataLimite || undefined,
+      categoria: form.categoria,
+      imagem: imagePreview.value || undefined,
+      nomeResponsavel: form.nomeResponsavel,
+      emailContato: form.emailContato
+    }
+
+    const vakinhaCriada = await vakinhaService.create(vakinhaData)
+    vakinhaId.value = vakinhaCriada._id || ''
     showSuccess.value = true
   } catch (error) {
     console.error('Erro ao criar vakinha:', error)
+    alert('Erro ao criar vakinha. Tente novamente.')
   } finally {
     isLoading.value = false
   }
